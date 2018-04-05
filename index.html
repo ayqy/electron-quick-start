@@ -2,17 +2,28 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Hello Webview!</title>
+    <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+    <div class="page">
+      <div class="header">
+        <form id="search">
+          <input class="search" name="url" value="https://github.com/explore" placeholder="https://github.com/explore" type="search">
+        </form>
+        <div class="actions">
+          <span id="backwords" class="action">&lt;</span>
+          <span id="forwards" class="action">&gt;</span>
+          <span id="refresh" class="action">○</span>
+        </div>
+      </div>
+      <div class="main">
+        <webview id="webview" class="webview" style="display: inline-flex;" src="http://www.ayqy.net/blog/"></webview>
+        <webview id="captureWebview" src="about:blank"></webview>
+      </div>
+    </div>
 
     <script>
-      // You can also require other files to run in this process
       require('./renderer.js')
     </script>
   </body>
