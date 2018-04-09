@@ -1,3 +1,5 @@
+const url = require('url');
+
 void function () {
   const $ = document.querySelector.bind(document);
   const webview = $('#webview');
@@ -61,6 +63,34 @@ void function () {
       ).then(result =>
         console.log('webContents exec then: ' + result)
       );
+
+      // Scroll into view after in-page navigation
+      webContents.on('did-navigate-in-page', (isMainFrame, pageUrl) => {
+        const anchor = (url.parse(pageUrl).hash || '').slice(1);
+        webContents.executeJavaScript(`
+          void function() {
+            var el;
+            if ('${anchor}') {
+							el = document.querySelector('#${anchor}');
+            }
+            if (el) {
+							el.scrollIntoView();
+							console.log('scrolled into view');
+            }
+            else {
+              el = document.querySelector('.book-body');
+              if (el) {
+                el.scrollTop = 0;
+              }
+            }
+          }();
+        `);
+      });
+
+      // Eager style injection to solve the problem of style flicker
+      // webContents.on('page-title-updated', () => {
+      //   injectCSS();
+      // });
     }
 
     // Enable Device Emulation
